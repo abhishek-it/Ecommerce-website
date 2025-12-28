@@ -1,0 +1,31 @@
+{
+  "name": "mern-backend",
+  "version": "1.0.0",
+  "description": "Flipkart clone ecommerce",
+  "keywords": [
+    "flipkart",
+    "clone"
+  ],
+  "license": "ISC",
+  "author": "Abhishek",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/index_server.js",
+    "dev": "nodemon ./src/index_server.js",
+    "test": "echo \"No tests defined\""
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.1",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.0.2",
+    "moongose": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}

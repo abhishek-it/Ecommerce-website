@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
     
 },{timstamps : true})
 
+
+userSchema.virtual('fullName').get(function(){
+   return `${this.firstName} ${this.LastName}`
+})
 userSchema.virtual('password')
 .set(function(password){
     this.hash_password = bcrypt.hashSync(password , 10);

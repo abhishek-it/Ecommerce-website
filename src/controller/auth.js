@@ -27,16 +27,63 @@ exports.signup = async (req, res) => {
         });
     }
 };
-exports.signin = async(req ,res) =>{
+exports.signin = async (req, res) => {
+  try {
     const { email } = req.body;
 
-   const user = await User.findOne({ email });
-   if(user.authenticate(req.body.password)){
-      const token = jwt.sign({_id : user._id} , process.env.JWT_SECRET , {expiresIn : "1h"})
-      const {firstName , LastName , email , role , fullName} = user;
-      res.status(200).json({
-        token,
-        user : {firstName , LastName , email , role , fullName}
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Something went wrong while signing in"
       });
-   }
-}
+    }
+
+    if (user.authenticate(req.body.password)) {
+      const token = jwt.sign(
+        { _id: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+
+      const { _id, firstName, lastName, role, fullName } = user;
+
+      return res.status(200).json({
+        token,
+        user: { _id, firstName, lastName, email, role, fullName }
+      });
+    }
+
+    
+  } catch (error) {
+    return res.status(400).json({
+      message: "Something went wrong while signing in"
+    });
+  }
+};
+
+exports.requireSignin = (req, res, next) => {
+  try {
+    // Check if Authorization header exists
+    if (!req.headers.authorization) {
+      return res.status(401).json({
+        error: "Authorization header missing"
+      });
+    }
+
+    // Format: "Bearer <token>"
+    const token = req.headers.authorization.split(" ")[1];
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Attach user info to request
+    req.user = decoded;
+
+    next();
+  } catch (error) {
+    return res.status(401).json({
+      error: "Invalid or expired token"
+    });
+  }
+};

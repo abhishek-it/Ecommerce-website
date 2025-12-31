@@ -2,14 +2,15 @@ const express = require('express');
 const env = require('dotenv');
 const mongoose = require('mongoose');
 
-const userRoutes = require('./routes/auth'); // ✅ IMPORTANT
+const userRoutes = require('./routes/auth'); // MUST point to router file
 
 const app = express();
 
 env.config();
 app.use(express.json());
 
-app.use('/api', userRoutes); // now this works
+// mount routes
+app.use('/api', userRoutes);
 
 mongoose.connect(
   "mongodb+srv://root:admin@cluster0.7wym5pe.mongodb.net/?appName=Cluster0"

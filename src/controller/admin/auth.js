@@ -2,35 +2,28 @@ const jwt = require('jsonwebtoken');
 const User = require('../../models/user');
 
 exports.signup = async (req, res) => {
-try {
-const { email } = req.body;
+  try {
+   
 
-const user = await User.findOne({ email });
+    const { email } = req.body;
 
-if (user) {
-return res.status(400).json({
-message: 'Admin already exists'
-});
-}
 
-const newUser = new User({
-  ...req.body,
-  role: "admin"
-});
-
+    const newUser = new User({
+      ...req.body,
+      role: 'admin'
+    });
 await newUser.save();
 
-res.status(201).json({
-message: 'Admin created successfully',
+    return res.status(201).json({
+      message: 'Admin created successfully'
+    });
 
-});
-
-} catch (error) {
-res.status(500).json({
-error: error.message
-});
-}
-};
+  } catch (error) {
+    return res.status(500).json({
+      error: error.message
+    });
+  }
+}; 
 exports.signin = async(req ,res) =>{
     const { email } = req.body;
 

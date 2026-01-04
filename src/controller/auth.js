@@ -3,6 +3,7 @@ const User = require('../models/user');
 
 exports.signup = async (req, res) => {
 try {
+    const errors = validationResult(req);
 const { email } = req.body;
 
 const user = await User.findOne({ email });
